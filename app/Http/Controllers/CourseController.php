@@ -44,7 +44,7 @@ class CourseController extends Controller
         try {
             $course = Course::create($request->only(['title', 'description','poster']));
             return new JsonResponse(
-                data: $course->only(['id','title', 'description']),
+                data: $course->only(['id','title', 'description', 'poster']),
                 status: Response::HTTP_CREATED
             );
         } catch (\Exception $e) {
