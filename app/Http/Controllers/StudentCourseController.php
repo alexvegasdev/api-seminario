@@ -54,7 +54,7 @@ class StudentCourseController extends Controller
     public function getStudentCourses(Student $student): JsonResponse
     {
         try {
-            $courses = $student->courses()->get(['courses.id as id', 'title', 'description']);
+            $courses = $student->courses()->get(['courses.id as id', 'title', 'description', 'poster']);
 
             return new JsonResponse(
                 data: $courses,
@@ -82,7 +82,7 @@ class StudentCourseController extends Controller
             $student->courses()->sync($request->course_ids);
 
             // Get the updated list of courses for the student
-            $courses = $student->courses()->get(['courses.id as id', 'title', 'description']);
+            $courses = $student->courses()->get(['courses.id as id', 'title', 'description','poster']);
 
             return new JsonResponse(
                 data: $courses,
@@ -110,7 +110,7 @@ class StudentCourseController extends Controller
             $student->courses()->sync($request->course_ids);
 
             // Get the updated list of courses
-            $updatedCourses = $student->courses()->get(['courses.id as id', 'title', 'description']);
+            $updatedCourses = $student->courses()->get(['courses.id as id', 'title', 'description','poster']);
 
             return new JsonResponse(
                 data: $updatedCourses,

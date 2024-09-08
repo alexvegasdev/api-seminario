@@ -20,7 +20,7 @@ class CourseController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $courses = Course::all(['id','title', 'description']);
+            $courses = Course::all(['id','title', 'description','poster']);
             return new JsonResponse(
                 data: $courses,
                 status: Response::HTTP_OK
@@ -42,7 +42,7 @@ class CourseController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            $course = Course::create($request->only(['title', 'description']));
+            $course = Course::create($request->only(['title', 'description','poster']));
             return new JsonResponse(
                 data: $course->only(['id','title', 'description']),
                 status: Response::HTTP_CREATED
@@ -65,7 +65,7 @@ class CourseController extends Controller
     {
         try {
             return new JsonResponse(
-                data: $course->only(['id','title', 'description']),
+                data: $course->only(['id','title', 'description','poster']),
                 status: Response::HTTP_OK
             );
         } catch (\Exception $e) {
@@ -86,9 +86,9 @@ class CourseController extends Controller
     public function update(Request $request, Course $course): JsonResponse
     {
         try {
-            $course->update($request->only(['title', 'description']));
+            $course->update($request->only(['title', 'description','poster']));
             return new JsonResponse(
-                data: $course->only(['id','title', 'description']),
+                data: $course->only(['id','title', 'description','poster']),
                 status: Response::HTTP_OK
             );
         } catch (\Exception $e) {

@@ -15,6 +15,7 @@ class Course extends Model
     [
         'title',
         'description',
+        'model'
     ];
     
 
