@@ -42,7 +42,7 @@ class StudentCourseController extends Controller
                 status: Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-}
+    }
 
 
     /**
@@ -55,6 +55,9 @@ class StudentCourseController extends Controller
     {
         try {
             $courses = $student->courses()->get(['courses.id as id', 'title', 'description', 'poster']);
+            foreach ($courses as $course) {
+                $course->makeHidden(['pivot']);
+            }
 
             return new JsonResponse(
                 data: $courses,
@@ -83,6 +86,9 @@ class StudentCourseController extends Controller
 
             // Get the updated list of courses for the student
             $courses = $student->courses()->get(['courses.id as id', 'title', 'description','poster']);
+            foreach ($courses as $course) {
+                $course->makeHidden(['pivot']);
+            }
 
             return new JsonResponse(
                 data: $courses,
@@ -111,6 +117,9 @@ class StudentCourseController extends Controller
 
             // Get the updated list of courses
             $updatedCourses = $student->courses()->get(['courses.id as id', 'title', 'description','poster']);
+            foreach ($updatedCourses as $course) {
+                $course->makeHidden(['pivot']);
+            }
 
             return new JsonResponse(
                 data: $updatedCourses,
