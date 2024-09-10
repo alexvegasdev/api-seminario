@@ -12,10 +12,13 @@ Route::resource('/students', StudentController::class);
 Route::resource('/courses', CourseController::class);
 
 // Additional routes for managing student-course relationships
-Route::prefix('students/{student}')->group(function () {
-    // Assign courses to a student
-    Route::post('/courses', [StudentCourseController::class, 'assignCourses']);
+Route::prefix('courses/{course}')->group(function () {
+    // Assign a student to a course
+    Route::post('/students', [StudentCourseController::class, 'assignStudentToCourse']);
+});
 
+// Routes for managing student relationships
+Route::prefix('students/{student}')->group(function () {
     // Get courses assigned to a student
     Route::get('/courses', [StudentCourseController::class, 'getStudentCourses']);
 
@@ -29,5 +32,6 @@ Route::prefix('students/{student}')->group(function () {
     Route::delete('/courses/all', [StudentCourseController::class, 'removeAllCourses']);
 });
 
-// Get all the students and their courses
-Route::get('/allstudents/courses', [StudentCourseController::class, 'getAllStudentsWithCourses']);
+// Get all students and their courses
+Route::get('/allstudents/courseslist
+', [StudentCourseController::class, 'getAllStudentsWithCourses']);

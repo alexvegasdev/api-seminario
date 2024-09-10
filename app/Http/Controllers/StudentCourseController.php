@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,7 +45,6 @@ class StudentCourseController extends Controller
         }
     }
 
-
     /**
      * Get the courses assigned to a student.
      * 
@@ -72,26 +72,28 @@ class StudentCourseController extends Controller
     }
 
     /**
-     * Assign courses to a student.
+     * Assign a student to a course.
      * 
      * @param Request $request.
-     * @param Student $student.
-     * @return JsonResponse Returns the student's courses after assignment.
+     * @param Course $course.
+     * @return JsonResponse Returns the course's students after assignment.
      */
-    public function assignCourses(Request $request, Student $student): JsonResponse
+    public function assignStudentToCourse(Request $request, Course $course): JsonResponse
     {
         try {
-            // Sync courses with the student (Add new courses or update existing ones)
-            $student->courses()->sync($request->course_ids);
+            // Validate request
+            $request->validate([
+                'student_id' => 'required|exists:students,id',
+            ]);
 
-            // Get the updated list of courses for the student
-            $courses = $student->courses()->get(['courses.id as id', 'title', 'description','poster']);
-            foreach ($courses as $course) {
-                $course->makeHidden(['pivot']);
-            }
+            // Attach the student to the course
+            $course->students()->attach($request->student_id);
 
+            // Get the updated list of students for the course
+            $students = $course->students()->get(['students.id as id', 'firstname', 'lastname']);
+            
             return new JsonResponse(
-                data: $courses,
+                data: $students,
                 status: Response::HTTP_OK
             );
         } catch (\Exception $e) {
@@ -100,7 +102,7 @@ class StudentCourseController extends Controller
                 status: Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-    }  
+    }
 
     /**
      * Update the courses assigned to a student.
