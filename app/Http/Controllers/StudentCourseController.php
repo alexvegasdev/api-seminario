@@ -22,14 +22,15 @@ class StudentCourseController extends Controller
     {
         try {
             // Get all students with their courses
-            $students = Student::with('courses:id,title')->get(['id', 'firstname', 'lastname']);
+            $students = Student::with('courses:id,title')->get(['id', 'firstname', 'lastname', 'email']);
 
             // Transform the data into the desired format
             $result = $students->map(function ($student) {
                 return [
                     'id' => $student->id,
                     'name' => $student->firstname . ' ' . $student->lastname,
-                    'courses' => $student->courses->pluck('title')->toArray(), // Get course titles as an array
+                    'email'=>$student->email,
+                    'courses' => $student->courses->pluck('title')->toArray(),
                 ];
             });
 
